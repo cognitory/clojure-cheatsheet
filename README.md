@@ -2,7 +2,7 @@
 
 A Clojure cheatsheet for Clojure beginners.
 
-Much like conj.io and http://clojure.org/api/cheatsheet , except abridged to include just the most common functions and macros.
+Much like http://conj.io and http://clojure.org/api/cheatsheet , except abridged to include just the most common functions and macros.
 
 
 == Installing
