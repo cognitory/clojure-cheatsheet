@@ -1,7 +1,8 @@
 (ns cheatsheet.core
   (:require [reagent.core :as r]
             [cheatsheet.data :refer [data]]
-            [cheatsheet.eval :refer [eval-code]]))
+            [cheatsheet.eval :refer [eval-code]]
+            [cheatsheet.styles :refer [styles-view]]))
 
 (enable-console-print!)
 
@@ -21,7 +22,7 @@
         meta (get-in @state [string])
         _ (when-not meta
             (get-docs string))]
-    [:div
+    [:div.meta
      [:div.ns (:ns meta)]
      [:div.name (:name meta)]
      [:div.arglists
@@ -55,6 +56,8 @@
       [list-view items])]])
 
 (defn app-view []
-  [group-view ["Cheatsheet" data]])
+  [:div.app
+   [styles-view]
+   [group-view ["Cheatsheet" data]]])
 
 (r/render-component [app-view] (.. js/document (getElementById "app")))
