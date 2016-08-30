@@ -19,8 +19,8 @@
                             #'re-find
                             #'re-matches]}
 
-   "keywords" {"create"    ["#'some-keyword"
-                            "#'some-ns/some-keyword"
+   "keywords" {"create"    [":some-keyword"
+                            ":some-ns/some-keyword"
                             #'keyword]
                "->str"     [#'name
                             #'namespace]}
