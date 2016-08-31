@@ -1,11 +1,25 @@
-(ns cheatsheet.data)
+(ns cheatsheet.data
+  (:require [clojure.pprint]))
 
 (def data
-  {"literals" ["true" "false" "nil"]
+  {"misc" {"comments" ["#_(...)" "comment" "; ..."]
+           "define" ["def" "defonce" "defn"]
+           "let" ["let" "if-let" "when-let"]
+           "arrange" ["->" "->>"]
+           "namespace" ["ns"]
+           "function" ["fn"]}
+
+   "branching" {"logic" ["if" "when" "if-not" "when-not" "cond" "case" "condp"]
+                "predicates" [#'= #'not=]
+                "operators" ["and" "or" #'not]}
+
+
+   "literals" {"create" ["true" "false" "nil"]
+               "test " [#'true? #'false? #'nil?]}
 
    "numbers" {"create"     ["1" "-1.5" #'int #'long]
               "arithmetic" [#'+ #'- #'* #'/ #'max #'min #'inc #'dec]
-              "compare"    [#'= #'< #'> #'<= #'>=]
+              "compare"    [#'== #'< #'> #'<= #'>=]
               "random"     [#'rand #'rand-int]}
 
    "strings" {"create"     ["\"some-text\"" #'str]
@@ -24,6 +38,32 @@
                             #'keyword]
                "->str"     [#'name
                             #'namespace]}
+
+   "sequences" {"misc" [#'map
+                        #'reduce
+                        #'apply
+                        "for"
+                        "doseq"
+                        #'concat
+                        #'count
+                        #'some
+                        ]
+                "loop" ["for" "doseq"]
+                "test" [#'some?
+                        #'empty?
+                        #'every?]
+                "shorter" [#'filter
+                           #'remove
+                           #'rest
+                           #'drop]
+                "reorder" [#'shuffle
+                           #'reverse
+                           #'sort
+                           #'sort-by]
+                "extract one" [#'nth
+                               #'first
+                               #'last
+                               #'rand-nth]}
 
    "vectors" {"create" ["[]"
                         #'vec]
@@ -63,4 +103,13 @@
 
    "atoms" {"create" [#'atom]
             "change" [#'swap! #'reset!]
-            "read" ["@" #'deref]}})
+            "read" ["@" #'deref]}
+
+"io" {"files" ["spit"
+               "slurp"]
+      "*out*" [#'println #'clojure.pprint/pprint]}
+
+"js interop" ["." ".." "cljs->js" "js->clj" "doto"
+              "#js { }"]
+
+"repl" ["*1" "clojure.repl/pst"]})
