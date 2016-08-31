@@ -1,4 +1,4 @@
-# Abridged Clojure Cheatsheet
+# An Abridged Clojure Cheatsheet
 
 A Clojure cheatsheet for Clojure beginners.
 
