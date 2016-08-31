@@ -73,7 +73,8 @@
      {:display "inline-block"
       :vertical-align "top"
       :width "26em"
-      :box-sizing "border-box"}
+      :box-sizing "border-box"
+      :padding "1em"}
 
      ["> h1"
       {:display "block"}]]]])
