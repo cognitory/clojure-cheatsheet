@@ -4,6 +4,8 @@ A Clojure cheatsheet for Clojure beginners.
 
 Similar to other cheatsheets (see below) except abridged to include just the most common functions and macros.
 
+https://cognitory.github.io/clojure-cheatsheet/
+
 ## Running in Dev
 
 `lein figwheel` then visit `http://localhost:3453`
