@@ -1,128 +1,187 @@
 (ns cheatsheet.data
-  (:require [clojure.pprint]))
+  (:require
+    [clojure.data]
+    [clojure.string]))
 
 (def data
-  {; BASICS
+  (apply array-map
+    [; BASICS
 
-   "basics" {"define" ["def" "defonce" "defn" "let" "declare" "ns"]
-             "branch" ["if" "when" "if-not" "when-not" "cond" "case" "condp" "if-let" "when-let"]
-             "compare" [#'= #'not= "and" "or" #'not]
-             "comments" ["#_(...)" "comment" "; ..."]}
+     "fundamentals" {"define" ["def" "defonce" "defn" "let" "declare" "ns"]
+                     "branch" ["if" "if-not" "if-let" "when" "when-not" "when-let" "cond" "case"]
+                     "compare" [#'= #'not= "and" "or" #'not #'compare]}
 
-   "functions" {"create" ["fn" "defn" #'identity #'constantly #'comp #'partial]
-                "arrange" ["->" "->>"]}
 
-   "numbers" {"literals"   ["1" "-1.5"]
-              "arithmetic" [#'+ #'- #'* #'/ #'max #'min #'inc #'dec]
-              "compare"    [#'== #'not= #'< #'> #'<= #'>=]
-              "random"     [#'rand #'rand-int]}
+     "functions" {"create" ["fn" "defn" #'identity #'constantly #'partial #'memoize]
+                  "call" [#'apply "->" "->>" "some->" "some->>"]
+                  "test" [#'fn?]}
 
-   "strings" {"create"     ["\"some-text\"" #'str]
-              "use"        [#'count
-                            #'clojure.string/join
-                            #'clojure.string/split
-                            #'clojure.string/replace]
-              "letters"    [#'clojure.string/upper-case
-                            #'clojure.string/lower-case
-                            #'clojure.string/capitalize]
-              "regex"      ["#\"some-pattern\""
-                            #'re-find
-                            #'re-matches
-                            #'re-pattern
-                            #'clojure.string/replace]
-              "test"       [#'clojure.string/blank?
-                            #'clojure.string/includes?]}
+     "atoms" {"create" [#'atom]
+              "change" [#'swap! #'reset!]
+              "read" ["@" #'deref]}
 
-   "atoms" {"create" [#'atom]
-            "change" [#'swap! #'reset!]
-            "read" ["@" #'deref]}
 
-   "js interop" {"create" ["#js { }" "#js [ ]"]
-                 "shorthand" ["." ".." "doto"]
-                 "properties" ["aget" "set" "aset"]
-                 "convert" ["cljs->js" "js->clj"]}
+     "misc" {"repl" ["*1" "*2" "*e" "pst" "pprint"
+                     "doc" "source" "require"]
+             "print" [#'println #'prn]
+             "exceptions" ["throw" "try" "ex-info"]
+             "files" ["spit" "slurp"]
+             "comments" ["#_(...)" "comment" "; ..."]
+             "loop" ["for" "doseq" "dotimes" "while" "loop" "recur"]
+             "do" ["do" #'doall]
+             #_#_"misc" [#'hash #'clojure.data/diff #'pr-str "read-string"]}
 
-   ; COLLECTIONS
+     "booleans & nil" {"create" ["true" "false" "nil"]
+                       "test " [#'true? #'false? #'nil? #'some?]}
 
-   "sequences" {"misc" [#'map
-                        #'map-indexed
-                        #'reduce
-                        #'apply
-                        #'count
-                        #'some
-                        #'group-by]
-                "create" [#'repeat
-                          #'range]
-                "loop" ["for" "doseq"]
-                "longer" [#'conj
-                          #'concat]
-                "test" [#'some?
-                        #'empty?
-                        #'every?]
-                "shorter" [#'filter
-                           #'remove
-                           #'rest
-                           #'drop
-                           #'keep]
-                "reorder" [#'shuffle
-                           #'reverse
-                           #'sort
-                           #'sort-by]
-                "extract one" [#'nth
-                               #'first
-                               #'last
-                               #'rand-nth]}
+     "numbers" {"literals"   ["1" "-1.5" "22/7"]
+                "arithmetic" [#'+ #'- #'* #'/ #'max #'min #'inc #'dec #'mod]
+                "compare"    [#'== #'< #'> #'<= #'>=]
+                "random"     [#'rand #'rand-int]
+                "test"       [#'zero? #'pos? #'neg? #'even? #'odd? #'number?]}
 
-   "vectors" {"create" ["[]"
-                        #'vec]
-              "examine" ["(your-vec idx)"
-                         #'nth
-                         #'get]
-              "change" [#'assoc
-                        #'assoc-in
-                        #'conj]}
+     "keywords" {"create"    [":some-keyword"
+                              ":some-ns/some-keyword"
+                              "::keyword-in-current-ns"
+                              "::alias/keyword-in-aliased-ns"
+                              #'keyword]
+                 "->str"     [#'name
+                              #'namespace]
+                 "test" [#'keyword?]}
 
-   "maps" {"create" ["{}" #'group-by #'hash]
-           "examine" ["(some-map k)"
-                      "(k some-map)"
-                      #'get
-                      #'get-in
-                      #'contains?
-                      #'keys
-                      #'vals]
-           "change" [#'assoc
-                     #'assoc-in
-                     #'dissoc
-                     #'merge
-                     #'select-keys
-                     #'update-in]}
+     "strings" {"create"     ["\"some text\"" #'str]
+                "use"        [#'count
+                              #'clojure.string/join
+                              #'clojure.string/split
+                              #'clojure.string/trim
+                              #'clojure.string/reverse
+                              #'clojure.string/index-of
+                              #'clojure.string/last-index-of]
+                "letters"    [#'clojure.string/upper-case
+                              #'clojure.string/lower-case
+                              #'clojure.string/capitalize]
+                "regex"      ["#\"some-pattern\""
+                              #'re-find
+                              #'re-matches
+                              #'re-pattern
+                              #'re-seq
+                              "re-groups"
+                              #'clojure.string/replace
+                              #'clojure.string/replace-first]
+                "test"       [#'string?
+                              #'clojure.string/blank?
+                              #'clojure.string/starts-with?
+                              #'clojure.string/ends-with?
+                              #'clojure.string/includes?]}
 
-   "sets" {"create" ["#{}"
-                     #'set]
-           "examine" ["(your-set k)"
-                      #'get
-                      #'contains?]
-           "change" [#'conj
-                     #'disj]
-           "ops"  [#'clojure.set/union
-                   #'clojure.set/difference
-                   #'clojure.set/intersection]
-           "test" [#'clojure.set/subset?
-                   #'clojure.set/superset?]}
+     #_#_"js interop" {"create" ["#js { }" "#js [ ]"]
+                       "shorthand" ["." ".." "doto"]
+                       "properties" ["aget" "set" "aset"]
+                       "convert" ["cljs->js" "js->clj"]}
 
-; OTHER
+     ; COLLECTIONS
 
-"literals" {"create" ["true" "false" "nil"]
-            "test " [#'true? #'false? #'nil?]}
+     "collections" {"misc" [#'map
+                            #'map-indexed
+                            #'mapcat
+                            #'reduce
+                            #'count
+                            #'group-by
+                            #'flatten
+                            #'partition
+                            #'partition-all
+                            #'partition-by
+                            #'split-at
+                            #'split-with]
+                    "create" [#'repeat
+                              #'range
+                              #'repeatedly
+                              #'iterate
+                              #'into]
+                    "longer" [#'conj
+                              #'concat
+                              #'cycle
+                              #'interleave
+                              #'interpose]
+                    "test content" [#'empty?
+                                    #'some
+                                    #'not-any?
+                                    #'distinct?
+                                    #'every?
+                                    #'not-every?]
+                    "shorter" [#'filter
+                               #'remove
+                               #'keep
+                               #'rest
+                               #'distinct
+                               #'dedupe
+                               #'take
+                               #'take-last
+                               #'take-nth
+                               #'drop
+                               #'drop-while]
+                    "reorder" [#'shuffle
+                               #'reverse
+                               #'sort
+                               #'sort-by]
+                    "extract one" [#'nth
+                                   #'first
+                                   #'second
+                                   #'last
+                                   #'rand-nth
+                                   #'some]}
 
-"keywords" {"create"    [":some-keyword"
-                         ":some-ns/some-keyword"
-                         #'keyword]
-            "->str"     [#'name
-                         #'namespace]}
+     "vectors" {"create" ["[]"
+                          #'vector
+                          #'vec]
+                "examine" ["(your-vec idx)"
+                           #'nth
+                           #'get
+                           ".indexOf"]
+                "change" [#'conj
+                          #'pop
+                          #'subvec
+                          #'assoc
+                          #'assoc-in
+                          #'update
+                          #'update-in]
+                "test" [#'vector?]}
 
-"io" {"files" ["spit"
-               "slurp"]
-      "*out*" [#'println #'clojure.pprint/pprint]}
+     "maps" {"create" ["{}" #'group-by #'frequencies #'zipmap]
+             "examine" ["(some-map key)"
+                        "(key some-map)"
+                        #'get
+                        #'get-in
+                        #'contains?
+                        #'keys
+                        #'vals]
+             "change" [#'assoc
+                       #'assoc-in
+                       #'dissoc
+                       #'merge
+                       #'merge-with
+                       #'select-keys
+                       #'update
+                       #'update-in
+                       #'clojure.set/rename-keys]
+             "test" [#'map?]}
 
-"repl" ["*1" "clojure.repl/pst"]})
+     "sets" {"create" ["#{}"
+                       #'set]
+             "examine" ["(your-set k)"
+                        #'get
+                        #'contains?]
+             "change" [#'conj
+                       #'disj]
+             "ops"  [#'clojure.set/union
+                     #'clojure.set/difference
+                     #'clojure.set/intersection]
+             "test" [#'clojure.set/subset?
+                     #'clojure.set/superset?]}
+
+     ; OTHER
+
+     #_#_"symbols" {"create" ["some.symbol" "some.ns/some-symbol" #'symbol]
+                    "test" [#'symbol?]}
+
+     ]))
