@@ -1,14 +1,19 @@
 (ns cheatsheet.core
-  (:require [reagent.core :as r]
-            [cheatsheet.data :refer [data]]
-            [cheatsheet.styles :refer [styles-view]]))
+  (:require
+    [clojure.string :as string]
+    [reagent.core :as r]
+    [cheatsheet.data :refer [data]]
+    [cheatsheet.styles :refer [styles-view]]))
 
 (enable-console-print!)
 
 (defn function-hover-view [item]
-  (let [meta (meta item)]
-    [:div.meta
-     [:div.ns (:ns meta)]
+  (let [meta (meta item)
+        core? (= 'cljs.core (:ns meta))]
+    [:div.meta {:class (when core? "core")}
+     [:div.ns
+      (when-not core?
+        (str (string/replace (str (:ns meta)) "cljs" "clojure") "/"))]
      [:div.name (:name meta)]
      [:div.arglists
       (for [arglist (or (get meta :arglists)
