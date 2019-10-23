@@ -1,39 +1,49 @@
 (ns cheatsheet.styles
-  (:require [garden.core :refer [css]]))
+  (:require
+    [garden.core :refer [css]]
+    [garden.stylesheet :refer [at-import at-media]]))
 
 (defn app-styles []
   [:.app
-   {:font-family "Courier New"
-    :font-size "13px"
+   {:font-family "'Source Code Pro', 'Courier New'"
+    :font-size "14px"
+    :font-weight "400"
     :line-height "1.25"}
 
-   [:.group
-    {:padding "0.5em"}
+   (at-media {:print true}
+     [:&
+      {:font-size "15px"}])
 
-    [:h1
+   [:.group
+    {:padding "0 0 0.5em 0"}
+
+
+
+    [:>h1
      {:font-size "1em"
+      :font-weight "700"
       :margin [[0 "0.5em" 0 0]]
       :display "inline-block"
       :vertical-align "top"}]
 
-    [:.children
+    [:>.children
      {:display "inline-block"
       :vertical-align "top"}
 
-     [:.list
+     [:>.list
       {:display "inline-block"
        :vertical-align "top"}
 
-      [".item:hover .meta"
+      [">.item:hover>.meta"
        {:display "block"}]
 
-      [:.item
+      [:>.item
        {:position "relative"
         :display "inline-block"
         :vertical-align "top"
         :margin-right "0.5em"}
 
-       [:.meta
+       [:>.meta
         {:display "none"
          :position "absolute"
          :top "-1.7em"
@@ -44,40 +54,63 @@
          :width "30em"
          :padding "0.5em"}
 
-        [:.ns
-         {:color "#999"}]
+        [:&.core
+         {:top "-0.5em"}]
 
-        [:.name
+        [:>.ns
+         {:color "#777"}]
+
+        [:>.name
          {:display "inline-block"
           :vertical-align "top"
           :margin-right "0.5em"}]
 
-        [:.arglists
+        [:>.arglists
          {:display "inline-block"
           :vertical-align "top"}
 
-         [:.arglist]]
+         [:>.arglist]]
 
-        [:.doc
+        [:>.doc
          {:margin-top "1em"
-          :color "#999"}]]]]]]
+          :color "#777"}]]]]]]
 
-   ["> .group"
-    {:white-space "inherit"
-     :width "100vw"}
+   [:>.group
+    {:white-space "inherit"}
 
-    ["> h1"
-     {:display "block"}]
+    [:>h1
+     {:display "block"
+      :font-size "2em"
+      :padding "0.75em 0 0 0.75em"}
 
-    ["> .children > .group"
-     {:display "inline-block"
-      :vertical-align "top"
-      :width "26em"
-      :box-sizing "border-box"
-      :padding "1em"}
+    (at-media {:print true}
+      [:&
+       {:display "none"}])]
 
-     ["> h1"
-      {:display "block"}]]]])
+    [:>.children
+     {:padding "0.5em"
+      :display "flex"
+      :flex-wrap "wrap"}
+
+     [:>.group
+      {:min-width "26em"
+       :width "25%"
+       :box-sizing "border-box"
+       :padding "0 1em"
+       :margin "1em 0"}
+
+      (at-media {:print true}
+        [:&
+         {:width "50%"
+          :break-inside "avoid"}])
+
+      [:>h1
+       {:display "block"
+        :font-size "1.25em"
+        :font-weight "900"
+        :padding "0.85em 0 0.75em"
+        :text-transform "uppercase"
+        :border-top "1px solid black"}]]]]])
 
 (defn styles-view []
   [:style
@@ -91,4 +124,8 @@
                                :animation
                                :flex-grow}
                 :vendors ["webkit"]}
+               (at-import "https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,900")
+               [:body
+                {:margin 0
+                 :padding 0}]
                (app-styles))}}])
